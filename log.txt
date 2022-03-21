@@ -1,0 +1,6 @@
+
+> api_express@1.0.0 start
+> node -r dotenv/config server.js
+
+Database connection OK
+This server is running on port 4000. Have fun !
