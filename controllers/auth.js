@@ -1,7 +1,7 @@
 const User = require( '../schemas/user' )
 const bcrypt = require( 'bcrypt' )
 const jwt = require( 'jsonwebtoken' )
-const login = ( req, res ) => {
+exports.login = ( req, res ) => {
     const { username, pwd } = req.body
     if ( !username || !pwd ) return res.status( 401 ).json( { message: "Utilisateur ou mot de passe incorrect" } )
     User.findOne( { pseudo: username }, ( err, user ) => {
