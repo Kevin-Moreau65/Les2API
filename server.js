@@ -6,7 +6,7 @@ const checkTokenMiddleware = require( './jsonwebtoken/check' )
 const bcrypt = require( 'bcrypt' )
 const mongonection = require( './db.config' )
 const user = require( './schemas/user' )
-
+const routeAuth = require( './routes/auth' )
 /************************************/
 /*** Import de la connexion à la DB */
 
@@ -33,7 +33,7 @@ app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
 // app.use( '/auth', auth_router )
 
 app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doing !?!1' ) )
-
+app.use( '/auth', routeAuth )
 /********************************/
 /*** Start serveur avec test DB */
 
