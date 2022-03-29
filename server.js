@@ -4,6 +4,8 @@ const express = require( 'express' )
 const cors = require( 'cors' )
 const bcrypt = require( 'bcrypt' )
 const mongonection = require( './db.config' )
+const routeArticle = require('./routes/article')
+const schemaArticle = require('./schemas/article')
 
 /************************************/
 /*** Import de la connexion à la DB */
@@ -24,7 +26,7 @@ app.use( express.urlencoded( { extended: true } ) )
 
 /******************************/
 /*** Mise en place du routage */
-app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
+app.use( '/article', routeArticle )
 
 // app.use( '/users', checkTokenMiddleware, user_router )
 
@@ -32,12 +34,26 @@ app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
 
 app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doing !?!1' ) )
 
+
+
 /********************************/
 /*** Start serveur avec test DB */
 
 
 mongonection
     .then( () => console.log( 'Database connection OK' ) )
+    .then(async () => {
+        const articles = await schemaArticle.find()
+        console.log(articles)
+        if(articles.length === 0){
+            console.log('Aucun article trouvé')
+            schemaArticle.create({nom:"Villa1",prix:"1.000.000€"}, (err,article) =>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        }
+    })
     .then( () => {
         app.listen( process.env.SERVER_PORT, () => {
             console.log( `This server is running on port ${ process.env.SERVER_PORT }. Have fun !` )
