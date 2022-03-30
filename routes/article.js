@@ -1,6 +1,7 @@
 /***********************************/
 /*** Import des module nécessaires */
 const express = require( 'express' )
+const checkTokenMiddleware = require('../jsonwebtoken/check')
 const articleCtrl = require( '../controllers/article' )
 
 /***************************************/
@@ -21,7 +22,7 @@ let router = express.Router()
 router.get( '/', articleCtrl.getAllArticle )
 router.get('/:id', articleCtrl.getOneArticle)
 //admin
-router.put('/', articleCtrl.newArticle)
-router.patch('/:id', articleCtrl.updateArticle)
-router.delete('/:id', articleCtrl.deleteArticle)
+router.put('/',checkTokenMiddleware,articleCtrl.newArticle)
+router.patch('/:id',checkTokenMiddleware,articleCtrl.updateArticle)
+router.delete('/:id',checkTokenMiddleware,articleCtrl.deleteArticle)
 module.exports = router
