@@ -1,9 +1,8 @@
 /***********************************/
 /*** Import des module nécessaires */
 const express = require( 'express' )
-const checkTokenMiddleware = require('../jsonwebtoken/check')
+const checkTokenMiddleware = require( '../jsonwebtoken/check' )
 const articleCtrl = require( '../controllers/article' )
-
 /***************************************/
 /*** Récupération du routeur d'express */
 let router = express.Router()
@@ -20,9 +19,9 @@ let router = express.Router()
 /*** Routage de la ressource Auth */
 
 router.get( '/', articleCtrl.getAllArticle )
-router.get('/:id', articleCtrl.getOneArticle)
+router.get( '/:id', articleCtrl.getOneArticle )
 //admin
-router.put('/',checkTokenMiddleware,articleCtrl.newArticle)
-router.patch('/:id',checkTokenMiddleware,articleCtrl.updateArticle)
-router.delete('/:id',checkTokenMiddleware,articleCtrl.deleteArticle)
+router.put( '/', /*checkTokenMiddleware,*/ articleCtrl.newArticle )
+router.patch( '/:id', checkTokenMiddleware, articleCtrl.updateArticle )
+router.delete( '/:id', checkTokenMiddleware, articleCtrl.deleteArticle )
 module.exports = router
