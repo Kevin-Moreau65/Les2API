@@ -2,7 +2,7 @@
 /*** Import des module nécessaires */
 const express = require( 'express' )
 const checkTokenMiddleware = require('../jsonwebtoken/check')
-const articleCtrl = require( '../controllers/article' )
+const commercialCtrl= require( '../controllers/commercial' )
 
 /***************************************/
 /*** Récupération du routeur d'express */
@@ -25,4 +25,5 @@ router.get('/:id', commercialCtrl.getOneCommercial)
 router.put('/',checkTokenMiddleware,commercialCtrl.newCommercial)
 router.patch('/:id',checkTokenMiddleware,commercialCtrl.updateCommercial)
 router.delete('/:id',checkTokenMiddleware,commercialCtrl.deleteCommercial)
+
 module.exports = router

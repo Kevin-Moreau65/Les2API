@@ -50,17 +50,17 @@ function fileFilter ( req, file, cb ) {
  exports.newCommercial = async ( req, res ) => {
     // uploadIMG( req, res, async err => {
     //    if ( err ) return res.status( 500 ).json( { message: "File error", err } )
-    const { nom, prix } = req.body
-    if ( !nom || !prix || !req.file ) {
+    const { id, description, image1, image2, image3, pdf } = req.body
+    if ( !id || !description || !image1 || !image2 || image3 ||  !pdf  ) {
        return res.status( 400 ).json( { message: 'Missing Data' } )
     }
     try {
-       let commercial = await Commercial.findOne( { nom: nom } )
+       let commercial = await Commercial.findById(id)
        if ( commercial !== null ) {
           return res.status( 409 ).json( { message: `La villa ${ nom } existe déjà` } )
        }
  
-       commercial = await Commercial.create( { nom, prix } )
+       commercial = await Commercial.create( { _id: id, description, image1, image2, image3, pdf } )
        return res.json( { message: `Villa ajouté`, data: commercial } )
     } catch ( err ) {
        return res.status( 500 ).json( { message: `Database Error`, error: err } )

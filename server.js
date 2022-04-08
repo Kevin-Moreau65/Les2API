@@ -4,6 +4,8 @@ const express = require( 'express' )
 const cors = require( 'cors' )
 const bcrypt = require( 'bcrypt' )
 const mongonection = require( './db.config' )
+const routeCommercial = require( './routes/commercial' )
+const schemaCommercial = require( './schemas/commercial' )
 
 /************************************/
 /*** Import de la connexion à la DB */
@@ -24,7 +26,7 @@ app.use( express.urlencoded( { extended: true } ) )
 
 /******************************/
 /*** Mise en place du routage */
-app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
+app.use( '/commercial', routeCommercial )
 
 // app.use( '/users', checkTokenMiddleware, user_router )
 
