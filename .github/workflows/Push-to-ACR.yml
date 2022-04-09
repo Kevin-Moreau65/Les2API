@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [auth, article]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to ACR
+      - uses: azure/docker-login@v1
+        with:
+          login-server: les2api.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PWD }}
+      - name: Build and push les2api-${{github.ref_name}}
+      - run: |
+          docker build . -t les2api.azurecr.io/les2api-${{github.ref_name}}:latest
+          docker push les2api.azurecr.io/les2api-${{github.ref_name}}:latest
