@@ -1,32 +1,25 @@
 const Article = require( '../schemas/article' )
+const fs = require( "fs" )
+const path = require( "path" )
 const bcrypt = require( 'bcrypt' )
 const jwt = require( 'jsonwebtoken' )
-const multer = require( 'multer' );
-const storage = multer.diskStorage( {
-   destination: function ( req, file, cb ) {
-      cb( null, 'uploads/' );
-   },
-   filename: function ( req, file, cb ) {
-      cb( null, file.originalname );
-   }
-} );
-function fileFilter ( req, file, cb ) {
-   // Allowed ext
-   const filetypes = /jpeg|jpg|png/;
-
-   // Check ext
-   const extname = filetypes.test( file.originalname.toLowerCase() );
-   // Check mime
-   const mimetype = filetypes.test( file.mimetype );
-
-   if ( mimetype && extname ) {
-      return cb( null, true );
-   } else {
-      cb( new Error( 'Invalid type!' ) );
+const checkExtention = ( img ) => {
+   if ( !img.extention ) return false
+   const ext = [ "jpg", "jpeg", "png", "webp" ]
+   return ext.includes( img.extention )
+}
+const generateImg = async ( img ) => {
+   const { body, extention } = img
+   try {
+      const time = Date.now()
+      const rad = Math.floor( Math.random() * 100000 )
+      const filename = `${ time * rad }.${ extention }`
+      await fs.promises.writeFile( path.join( process.cwd(), "/uploads", filename ), body, { encoding: "base64" } )
+      return filename
+   } catch ( err ) {
+      console.log( err );
    }
 }
-const upload = multer( { storage, fileFilter } );
-const uploadIMG = upload.single( 'articleIMG' )
 exports.getAllArticle = ( req, res ) => {
    Article.find( {}, ( err, articles ) => {
       if ( err ) return res.status( 500 ).json( { message: "Server ERROR", error: err } )
@@ -47,10 +40,8 @@ exports.getOneArticle = async ( req, res ) => {
 }
 
 exports.newArticle = async ( req, res ) => {
-   // uploadIMG( req, res, async err => {
-   //    if ( err ) return res.status( 500 ).json( { message: "File error", err } )
-   const { nom, prix } = req.body
-   if ( !nom || !prix || !req.file ) {
+   const { nom, prix, img } = req.body
+   if ( !nom || !prix || !img || !checkExtention( img ) || !img.body ) {
       return res.status( 400 ).json( { message: 'Missing Data' } )
    }
    try {
@@ -58,13 +49,13 @@ exports.newArticle = async ( req, res ) => {
       if ( article !== null ) {
          return res.status( 409 ).json( { message: `La villa ${ nom } existe déjà` } )
       }
-
-      article = await Article.create( { nom, prix } )
+      const image = await generateImg( img )
+      article = await Article.create( { nom, prix, image } )
+      console.log( `Villa ${ nom } a était crée` );
       return res.json( { message: `Villa ajouté`, data: article } )
    } catch ( err ) {
       return res.status( 500 ).json( { message: `Database Error`, error: err } )
    }
-   // } )
 }
 
 exports.updateArticle = async ( req, res ) => {
