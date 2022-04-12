@@ -47,6 +47,7 @@ exports.newArticle = async ( req, res ) => {
    try {
       let article = await Article.findOne( { nom: nom } )
       if ( article !== null ) {
+         console.log( `Tentative de recréation de la villa ${ nom }` );
          return res.status( 409 ).json( { message: `La villa ${ nom } existe déjà` } )
       }
       const image = await generateImg( img )
@@ -60,18 +61,26 @@ exports.newArticle = async ( req, res ) => {
 
 exports.updateArticle = async ( req, res ) => {
    const { id } = req.params
-   if ( !id ) {
+   const { img, nom, prix } = req.body
+   if ( !id || !nom || !prix ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
-
    try {
       const article = await Article.findById( id )
-      if ( article === null ) {
-         return res.status( 404 ).json( { message: "Cette villa n'existe pas" } )
+      if ( article === null ) return res.status( 404 ).json( { message: "Cette villa n'existe pas" } )
+      if ( article.nom.toLowerCase() !== nom.toLowerCase() ) {
+         const check = await Article.findOne( { nom } )
+         if ( check !== null ) return res.status( 409 ).json( { message: "Cette villa existe deja" } )
       }
-
-
-      await Article.findByIdAndUpdate( id, { ...req.body } )
+      const update = { nom, prix }
+      if ( img ) {
+         if ( !checkExtention( img ) || !img.body ) return res.status( 400 ).json( { message: "Missing parameter" } )
+         await fs.promises.rm( path.join( process.cwd(), "/uploads", article.image ) )
+         const filename = await generateImg( img )
+         update.image = filename
+      }
+      await Article.findByIdAndUpdate( id, { ...update } )
+      console.log( `Villa ${ article.nom } -> ${ nom } mis a jour` )
       return res.json( { message: 'Villa mis a jour' } )
    } catch ( err ) {
       return res.status( 500 ).json( { message: 'Database Error', error: err } )
@@ -80,16 +89,21 @@ exports.updateArticle = async ( req, res ) => {
 
 
 
-exports.deleteArticle = ( req, res ) => {
-   let articleId = parseInt( req.params.id )
+exports.deleteArticle = async ( req, res ) => {
+   const { id } = req.params
 
-   if ( !articleId ) {
+   if ( !id ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
-
-   Article.deleteOne( { id: articleId } )
-      .then( () => res.status( 204 ).json( {} ) )
-      .catch( err => res.status( 500 ).json( { message: 'Database Error', error: err } ) )
+   try {
+      const article = await Article.findByIdAndDelete( id )
+      if ( article === null ) return res.status( 404 ).json( { message: "Cette villa n'existe pas" } )
+      await fs.promises.rm( path.join( process.cwd(), "/uploads", article.image ) )
+      console.log( `Villa ${ article.nom } supprimé` )
+      return res.status( 204 ).json( {} )
+   } catch ( err ) {
+      return res.status( 500 ).json( { message: "Database error", error: err } )
+   }
 }
 
 

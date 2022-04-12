@@ -27,7 +27,7 @@ app.use( express.urlencoded( { extended: true } ) )
 /******************************/
 /*** Mise en place du routage */
 app.use( '/article', routeArticle )
-
+app.use( '/health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
 // app.use( '/users', checkTokenMiddleware, user_router )
 
 // app.use( '/auth', auth_router )
@@ -44,15 +44,10 @@ mongonection
     .then( () => console.log( 'Database connection OK' ) )
     .then( async () => {
         const articles = await schemaArticle.find()
-        console.log( articles )
         if ( articles.length === 0 ) {
             console.log( 'Aucun article trouvé' )
-            schemaArticle.create( { nom: "Villa1", prix: "1.000.000€" }, ( err, article ) => {
-                if ( err ) {
-                    console.log( err )
-                }
-            } )
         }
+        console.log( articles )
     } )
     .then( () => {
         app.listen( process.env.SERVER_PORT, () => {
