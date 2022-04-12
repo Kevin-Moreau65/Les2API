@@ -2,8 +2,7 @@
 /*** Import des modules nécessaires */
 const express = require( 'express' )
 const cors = require( 'cors' )
-const bcrypt = require( 'bcrypt' )
-const axios = require( 'axios' )
+const helmet = require( "helmet" )
 
 /************************************/
 /*** Import de la connexion à la DB */
@@ -13,6 +12,16 @@ const axios = require( 'axios' )
 const app = express()
 
 app.use( cors() )
+app.use( helmet() )
+app.use( helmet.contentSecurityPolicy( {
+    useDefaults: true
+} ) )
+app.use( helmet.dnsPrefetchControl( {
+    allow: true
+} ) )
+app.use( helmet.hidePoweredBy() )
+app.use( helmet.noSniff() )
+app.use( helmet.xssFilter() )
 app.use( express.json() )
 app.use( express.urlencoded( { extended: true } ) )
 
@@ -25,7 +34,8 @@ app.use( express.urlencoded( { extended: true } ) )
 /******************************/
 /*** Mise en place du routage */
 app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
-
+app.use( '/health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
+app.use( "/media", express.static( './uploads' ) )
 // app.use( '/users', checkTokenMiddleware, user_router )
 
 // app.use( '/auth', auth_router )
@@ -35,12 +45,6 @@ app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doi
 /********************************/
 /*** Start serveur avec test DB */
 
-const instance = axios.create( { baseURL: `http://${ process.env.API_ARTICLE }:${ process.env.API_PORT }` } )
-instance.get( `/article` )
-    .then( ( response ) => console.log( response.data ) )
-    .then( () => {
-        app.listen( process.env.SERVER_PORT, () => {
-            console.log( `This server is running on port ${ process.env.SERVER_PORT }. Have fun !` )
-        } )
-    } )
-    .catch( err => console.log( 'Database Error', err ) )
+app.listen( process.env.SERVER_PORT, () => {
+    console.log( `This server is running on port ${ process.env.SERVER_PORT }. Have fun !` )
+} )
