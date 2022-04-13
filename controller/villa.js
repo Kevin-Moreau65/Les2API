@@ -4,7 +4,7 @@ const article = axios.create( { baseURL: `http://${ process.env.API_ARTICLE }:${
 exports.newVilla = async ( req, res ) => {
     try {
         const { nom, prix, image_article } = req.body
-        const response = await article.post( {
+        const response = await article.post( '/', {
             nom,
             prix,
             img: image_article
