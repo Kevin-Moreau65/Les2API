@@ -2,6 +2,7 @@
 /*** Import des modules nécessaires */
 const express = require( 'express' )
 const cors = require( 'cors' )
+const path = require( "path" )
 const helmet = require( "helmet" )
 const routeVilla = require( "./routes/villa" )
 /************************************/
@@ -47,5 +48,6 @@ app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doi
 /*** Start serveur avec test DB */
 
 app.listen( process.env.SERVER_PORT, () => {
+    console.log( path.join( process.cwd(), "/uploads" ) )
     console.log( `This server is running on port ${ process.env.SERVER_PORT }. Have fun !` )
 } )
