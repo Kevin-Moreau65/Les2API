@@ -2,6 +2,7 @@ const Commercial = require( '../schemas/commercial' )
 const bcrypt = require( 'bcrypt' )
 const jwt = require( 'jsonwebtoken' )
 const fs = require( 'fs' )
+const path = require( "path" )
 const checkExtention = ( img, type = "img" ) => {
    if ( !img.extention ) return false
    let ext
