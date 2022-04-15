@@ -7,6 +7,6 @@ exports.handleError = ( res, err, api ) => {
         console.log( `Error API ${ api }`, error.message )
         return res.status( 500 ).json( { error: err.message } )
     }
-    if ( err.response ) return res.status( err.response.status ).json( { error: err.response.data } )
+    if ( err.response ) return res.status( err.response.status ).json( { error: err.response.data, api } )
 
 }
