@@ -25,7 +25,7 @@ exports.newVilla = async ( req, res ) => {
         const response_commercial = commercial.post( '/commercial', {
             headers,
             imgs: [ ...images_comm ],
-            id: data.article._id,
+            id: data.article.data._id,
             description,
             pdf
         } )
