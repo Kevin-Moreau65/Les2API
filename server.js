@@ -27,6 +27,7 @@ app.use( express.urlencoded( { extended: true } ) )
 /******************************/
 /*** Mise en place du routage */
 app.use( '/commercial', routeCommercial )
+app.use( 'health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
 
 // app.use( '/users', checkTokenMiddleware, user_router )
 
