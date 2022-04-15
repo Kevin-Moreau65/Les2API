@@ -15,7 +15,7 @@ exports.newVilla = async ( req, res ) => {
     }
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
-        const response_article = await article.post( '/article', { headers }, {
+        const response_article = await article.post( '/article', {
             headers,
             nom,
             prix,
