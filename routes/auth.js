@@ -18,6 +18,6 @@ router.use( ( req, res, next ) => {
 /**********************************/
 /*** Routage de la ressource Auth */
 
-router.post( '/login', authCtrl.login )
+router.post( '/', authCtrl.login )
 
 module.exports = router
