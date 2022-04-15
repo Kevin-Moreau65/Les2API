@@ -31,9 +31,9 @@ app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
 // app.use( '/users', checkTokenMiddleware, user_router )
 
 // app.use( '/auth', auth_router )
-
-app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doing !?!1' ) )
 app.use( '/auth', routeAuth )
+app.use( '/health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
+app.get( '*', ( req, res ) => res.status( 501 ).send( 'What the hell are you doing !?!1' ) )
 /********************************/
 /*** Start serveur avec test DB */
 
