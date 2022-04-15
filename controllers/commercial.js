@@ -42,7 +42,7 @@ exports.getOneCommercial = async ( req, res ) => {
 
 exports.newCommercial = async ( req, res ) => {
    const { id, description, imgs, pdf } = req.body
-   if ( !imgs[ 0 ].body || !imgs[ 1 ].body || !imgs[ 2 ].body || pdf.body ) {
+   if ( !imgs[ 0 ].body || !imgs[ 1 ].body || !imgs[ 2 ].body || !pdf.body ) {
       return res.status( 401 ).json( { message: 'Bad Request' } )
    }
    try {
@@ -75,7 +75,7 @@ exports.updateCommercial = async ( req, res ) => {
    let data = {}
    if ( description ) data.description = description
    if ( imgs ) {
-      for ( const [ key, img ] of Object.entries( imgs ) ) {
+      for await ( const [ key, img ] of Object.entries( imgs ) ) {
          if ( !checkExtention( img ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
          const filename = await generateFile( img )
          data[ key ] = filename
