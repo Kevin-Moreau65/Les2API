@@ -50,11 +50,12 @@ exports.newCommercial = async ( req, res ) => {
       if ( commercial !== null ) {
          return res.status( 409 ).json( { message: `La villa ${ nom } existe déjà` } )
       }
-      const imgsFilename = imgs.map( async img => {
+      const promise = imgs.map( img => {
          if ( !checkExtention( img ) ) return false
-         const filename = await generateFile( img )
+         const filename = generateFile( img )
          return filename
       } )
+      const imgsFilename = Promise.all( promise )
       if ( !checkExtention( pdf, "pdf" ) || imgsFilename.includes( false ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
       const pdfFilename = await generateFile( pdf )
       commercial = await Commercial.create( { _id: id, description, image1: imgsFilename[ 0 ], image2: imgsFilename[ 1 ], image3: imgsFilename[ 2 ], pdf: pdfFilename } )
