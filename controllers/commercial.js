@@ -61,6 +61,7 @@ exports.newCommercial = async ( req, res ) => {
       commercial = await Commercial.create( { _id: id, description, image1: imgsFilename[ 0 ], image2: imgsFilename[ 1 ], image3: imgsFilename[ 2 ], pdf: pdfFilename } )
       return res.json( { message: `Villa ajouté`, data: commercial } )
    } catch ( err ) {
+      console.log( err );
       return res.status( 500 ).json( { message: `Database Error`, error: err } )
    }
 }
