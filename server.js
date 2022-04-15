@@ -5,7 +5,7 @@ const cors = require( 'cors' )
 const path = require( "path" )
 const helmet = require( "helmet" )
 const routeVilla = require( "./routes/villa" )
-const routeAuth = require( "./route/auth" )
+const routeAuth = require( "./routes/auth" )
 /************************************/
 /*** Import de la connexion à la DB */
 
