@@ -50,7 +50,7 @@ exports.newCommercial = async ( req, res ) => {
       if ( commercial !== null ) {
          return res.status( 409 ).json( { message: `La villa ${ nom } existe déjà` } )
       }
-      const imgsFilename = imgs.map( img => {
+      const imgsFilename = imgs.map( async img => {
          if ( !checkExtention( img ) ) return false
          const filename = await generateFile( img )
          return filename
