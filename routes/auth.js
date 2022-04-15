@@ -8,5 +8,5 @@ let router = express.Router()
 /**********************************/
 /*** Routage de la ressource Auth */
 
-router.post( '/', checkTokenMiddleware, authCtrl.login )
+router.post( '/', authCtrl.login )
 module.exports = router
