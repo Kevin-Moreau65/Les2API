@@ -37,7 +37,7 @@ app.use( express.urlencoded( { extended: true } ) )
 /*** Mise en place du routage */
 app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
 app.use( '/health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
-app.use( '/auth', routeAuth )
+app.use( '/login', routeAuth )
 app.use( '/article', routeVilla )
 app.use( "/media", express.static( './uploads' ) )
 // app.use( '/users', checkTokenMiddleware, user_router )
