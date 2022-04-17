@@ -49,7 +49,7 @@ exports.modifyVilla = async ( req, res ) => {
             modified = true
         }
         if ( images_comm || description || pdf ) {
-            await commercial.patch( `/article/${ id }`, {
+            await commercial.patch( `/commercial/${ id }`, {
                 imgs: { ...images_comm },
                 description,
                 pdf
@@ -71,7 +71,7 @@ exports.deleteVilla = async ( req, res ) => {
     }
     try {
         await article.delete( `/article/${ id }`, { headers } )
-        await commercial.delete( `/article/${ id }`, { headers } )
+        await commercial.delete( `/commercial/${ id }`, { headers } )
         return res.status( 201 ).json( { message: "OK" } )
     } catch ( err ) {
         return utilsAxios.handleError( res, err, "Commercial" )
@@ -97,7 +97,7 @@ exports.getVilla = async ( req, res ) => {
         error_article = err
     } finally {
         try {
-            const response_commercial = await commercial.get( `/article/${ id }` )
+            const response_commercial = await commercial.get( `/commercial/${ id }` )
             data.commercial = { ...response_commercial.data }
             return res.status( 200 ).json( { data } )
         } catch ( err ) {
