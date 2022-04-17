@@ -36,19 +36,23 @@ exports.newVilla = async ( req, res ) => {
 exports.modifyVilla = async ( req, res ) => {
     const { id } = req.params
     let modified = false
+    let api
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
     const { authorization } = req.headers
     let headers = {
         'Authorization': authorization
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
+    console.log( { nom, prix, image_article, images_comm, description, pdf } )
     if ( !nom && !prix && !image_article && !images_comm && !description && !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
         if ( nom || prix || image_article ) {
+            api = "Article"
             await article.patch( `/article/${ id }`, { nom, prix, img: image_article }, { headers } )
             modified = true
         }
         if ( images_comm || description || pdf ) {
+            api = "Commercial"
             await commercial.patch( `/commercial/${ id }`, {
                 imgs: { ...images_comm },
                 description,
@@ -59,7 +63,7 @@ exports.modifyVilla = async ( req, res ) => {
         if ( !modified ) return res.status( 400 ).json( { message: "Bad Request" } )
         return res.status( 200 ).json( { message: "Villa modifiée !" } )
     } catch ( err ) {
-        return utilsAxios.handleError( res, err, "Commercial" )
+        return utilsAxios.handleError( res, err, api )
     }
 }
 exports.deleteVilla = async ( req, res ) => {
