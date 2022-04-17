@@ -10,7 +10,7 @@ exports.newVilla = async ( req, res ) => {
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
     const token = req.headers.authorization && extractBearer( req.headers.authorization )
-    const headers = {
+    let headers = {
         'Authorization': `Bearer ${ token }`
     }
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
@@ -22,6 +22,9 @@ exports.newVilla = async ( req, res ) => {
             img: image_article
         } )
         data.article = { ...response_article.data }
+        headers = {
+            'Authorization': `Bearer ${ token }`
+        }
         const response_commercial = await commercial.post( '/commercial', {
             headers,
             imgs: [ ...images_comm ],
