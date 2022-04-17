@@ -1,6 +1,5 @@
 const axios = require( 'axios' )
 const utilsAxios = require( '../utils/errorAxios' )
-const { extractBearer } = require( '../jsonwebtoken/check' )
 const article = axios.create( { baseURL: `http://${ process.env.API_ARTICLE }:${ process.env.PORT_ARTICLE }` } )
 const commercial = axios.create( { baseURL: `http://${ process.env.API_COMMERCIAL }:${ process.env.PORT_COMMERCIAL }` } )
 exports.newVilla = async ( req, res ) => {
@@ -9,9 +8,9 @@ exports.newVilla = async ( req, res ) => {
         commercial: undefined
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
-    const token = req.headers.authorization && extractBearer( req.headers.authorization )
+    const { authorization } = req.headers
     let headers = {
-        'Authorization': `bearer ${ token }`
+        authorization
     }
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
@@ -40,9 +39,9 @@ exports.modifyVilla = async ( req, res ) => {
     const { id } = req.params
     let modified = false
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
-    const token = req.headers.authorization && extractBearer( req.headers.authorization )
-    const headers = {
-        'Authorization': `bearer ${ token }`
+    const { authorization } = req.headers
+    let headers = {
+        authorization
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
     if ( !nom && !prix && !image_article && !images_comm && !description && !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
@@ -69,9 +68,9 @@ exports.modifyVilla = async ( req, res ) => {
 exports.deleteVilla = async ( req, res ) => {
     const { id } = req.params
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
-    const token = req.headers.authorization && extractBearer( req.headers.authorization )
-    const headers = {
-        'Authorization': `bearer ${ token }`
+    const { authorization } = req.headers
+    let headers = {
+        authorization
     }
     try {
         await article.delete( `/article/${ id }`, { headers } )
