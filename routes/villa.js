@@ -13,7 +13,7 @@ let router = express.Router()
 router.get( '/', villaCtrl.getVillas )
 router.get( '/:id', villaCtrl.getVilla )
 //admin
-router.post( '/', checkTokenMiddleware, villaCtrl.newVilla )
-router.patch( '/:id', checkTokenMiddleware, villaCtrl.modifyVilla )
-router.delete( '/:id', checkTokenMiddleware, villaCtrl.deleteVilla )
+router.post( '/', villaCtrl.newVilla )
+router.patch( '/:id', villaCtrl.modifyVilla )
+router.delete( '/:id', villaCtrl.deleteVilla )
 module.exports = router
