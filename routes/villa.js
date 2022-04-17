@@ -13,6 +13,6 @@ router.get( '/', villaCtrl.getVillas )
 router.get( '/:id', villaCtrl.getVilla )
 //admin
 router.post( '/', villaCtrl.newVilla )
-router.patch( '/:id', villaCtrl.modifyVilla )
+router.put( '/:id', villaCtrl.modifyVilla )
 router.delete( '/:id', villaCtrl.deleteVilla )
 module.exports = router
