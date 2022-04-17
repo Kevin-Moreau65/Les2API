@@ -15,19 +15,17 @@ exports.newVilla = async ( req, res ) => {
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
         const response_article = await article.post( '/article', {
-            headers,
             nom,
             prix,
             img: image_article
-        } )
+        }, { headers } )
         data.article = { ...response_article.data }
         const response_commercial = await commercial.post( '/commercial', {
-            headers,
             imgs: [ ...images_comm ],
             id: data.article.data._id,
             description,
             pdf
-        } )
+        }, { headers } )
         data.commercial = { ...response_commercial.data }
         return res.status( 201 ).json( { message: 'OK', data } )
     } catch ( err ) {
@@ -47,16 +45,15 @@ exports.modifyVilla = async ( req, res ) => {
     if ( !nom && !prix && !image_article && !images_comm && !description && !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
         if ( nom || prix || image_article ) {
-            await article.patch( `/article/${ id }`, { headers, nom, prix, img: image_article } )
+            await article.patch( `/article/${ id }`, { nom, prix, img: image_article }, { headers } )
             modified = true
         }
         if ( images_comm || description || pdf ) {
             await commercial.patch( `/article/${ id }`, {
-                headers,
                 imgs: { ...images_comm },
                 description,
                 pdf
-            } )
+            }, { headers } )
             modified = true
         }
         if ( !modified ) return res.status( 400 ).json( { message: "Bad Request" } )
