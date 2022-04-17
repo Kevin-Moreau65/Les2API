@@ -22,7 +22,7 @@ const checkTokenMiddleware = ( req, res, next ) => {
     if ( !token ) {
         return res.status( 401 ).json( { message: 'No token' } )
     }
-
+    console.log( token )
     // Vérifier la validité du token
     jwt.verify( token, process.env.JWT_SECRET, ( err, decodedToken ) => {
         if ( err ) {
