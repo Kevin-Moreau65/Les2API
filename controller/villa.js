@@ -13,6 +13,7 @@ exports.newVilla = async ( req, res ) => {
     let headers = {
         'Authorization': `Bearer ${ token }`
     }
+    console.log( "before", headers );
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
         const response_article = await article.post( '/article', {
@@ -22,6 +23,7 @@ exports.newVilla = async ( req, res ) => {
             img: image_article
         } )
         data.article = { ...response_article.data }
+        console.log( "after", headers );
         headers = {
             'Authorization': `Bearer ${ token }`
         }
