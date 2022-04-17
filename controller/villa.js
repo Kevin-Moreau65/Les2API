@@ -10,7 +10,7 @@ exports.newVilla = async ( req, res ) => {
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
     const { authorization } = req.headers
     let headers = {
-        authorization
+        'Authorization': authorization
     }
     if ( !nom || !prix || !image_article || !images_comm || !description || !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
     try {
@@ -39,7 +39,7 @@ exports.modifyVilla = async ( req, res ) => {
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
     const { authorization } = req.headers
     let headers = {
-        authorization
+        'Authorization': authorization
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
     if ( !nom && !prix && !image_article && !images_comm && !description && !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
@@ -67,7 +67,7 @@ exports.deleteVilla = async ( req, res ) => {
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
     const { authorization } = req.headers
     let headers = {
-        authorization
+        'Authorization': authorization
     }
     try {
         await article.delete( `/article/${ id }`, { headers } )
