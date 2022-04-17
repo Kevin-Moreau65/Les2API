@@ -42,7 +42,7 @@ exports.modifyVilla = async ( req, res ) => {
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
     const token = req.headers.authorization && extractBearer( req.headers.authorization )
     const headers = {
-        'Authorization': `Bearer ${ token }`
+        'Authorization': `bearer ${ token }`
     }
     const { nom, prix, image_article, images_comm, description, pdf } = req.body
     if ( !nom && !prix && !image_article && !images_comm && !description && !pdf ) return res.status( 401 ).json( { message: "Bad Request" } )
@@ -71,7 +71,7 @@ exports.deleteVilla = async ( req, res ) => {
     if ( !id ) return res.send( 400 ).json( { message: "Bad request" } )
     const token = req.headers.authorization && extractBearer( req.headers.authorization )
     const headers = {
-        'Authorization': `Bearer ${ token }`
+        'Authorization': `bearer ${ token }`
     }
     try {
         await article.delete( `/article/${ id }`, { headers } )
