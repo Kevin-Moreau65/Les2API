@@ -1,5 +1,4 @@
 const express = require( 'express' )
-const { checkTokenMiddleware } = require( '../jsonwebtoken/check' )
 const authCtrl = require( '../controller/auth' )
 /***************************************/
 /*** Récupération du routeur d'express */

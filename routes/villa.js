@@ -1,7 +1,6 @@
 /***********************************/
 /*** Import des module nécessaires */
 const express = require( 'express' )
-const { checkTokenMiddleware } = require( '../jsonwebtoken/check' )
 const villaCtrl = require( '../controller/villa' )
 /***************************************/
 /*** Récupération du routeur d'express */
