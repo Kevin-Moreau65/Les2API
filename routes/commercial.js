@@ -19,7 +19,7 @@ let router = express.Router()
 /**********************************/
 /*** Routage de la ressource Auth */
 
-router.get( '/', commercialCtrl.getAllCommercial )
+
 router.get( '/:id', commercialCtrl.getOneCommercial )
 //admin
 router.post( '/', checkTokenMiddleware, commercialCtrl.newCommercial )
