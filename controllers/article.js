@@ -62,13 +62,13 @@ exports.newArticle = async ( req, res ) => {
 exports.updateArticle = async ( req, res ) => {
    const { id } = req.params
    const { img, nom, prix } = req.body
-   if ( !id || !nom || !prix ) {
+   if ( !id && !nom && !prix && !img ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
    try {
       const article = await Article.findById( id )
       if ( article === null ) return res.status( 404 ).json( { message: "Cette villa n'existe pas" } )
-      if ( article.nom.toLowerCase() !== nom.toLowerCase() ) {
+      if ( nom && article.nom.toLowerCase() !== nom.toLowerCase() ) {
          const check = await Article.findOne( { nom } )
          if ( check !== null ) return res.status( 409 ).json( { message: "Cette villa existe deja" } )
       }
@@ -83,6 +83,7 @@ exports.updateArticle = async ( req, res ) => {
       console.log( `Villa ${ article.nom } -> ${ nom } mis a jour` )
       return res.json( { message: 'Villa mis a jour' } )
    } catch ( err ) {
+      console.log( err );
       return res.status( 500 ).json( { message: 'Database Error', error: err } )
    }
 }
