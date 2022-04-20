@@ -69,25 +69,25 @@ exports.newCommercial = async ( req, res ) => {
 
 exports.updateCommercial = async ( req, res ) => {
    const { id } = req.params
-   if ( !id ) {
+   const { description, imgs, pdf } = req.body
+   if ( !id, !description, !imgs, !pdf ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
-   const { description, imgs, pdf } = req.body
    let data = {}
    if ( description ) data.description = description
-   if ( imgs ) {
-      for await ( const [ key, img ] of Object.entries( imgs ) ) {
-         if ( !checkExtention( img ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
-         const filename = await generateFile( img )
-         data[ key ] = filename
-      }
-   }
-   if ( pdf ) {
-      if ( !checkExtention( pdf, "pdf" ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
-      const filename = await generateFile( pdf )
-      data.pdf = filename
-   }
    try {
+      if ( imgs ) {
+         for await ( const [ key, img ] of Object.entries( imgs ) ) {
+            if ( !checkExtention( img ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
+            const filename = await generateFile( img )
+            data[ key ] = filename
+         }
+      }
+      if ( pdf ) {
+         if ( !checkExtention( pdf, "pdf" ) ) return res.status( 401 ).json( { message: 'Bad Request' } )
+         const filename = await generateFile( pdf )
+         data.pdf = filename
+      }
       const commercial = await Commercial.findById( id )
       if ( commercial === null ) {
          return res.status( 404 ).json( { message: "Cette villa n'existe pas" } )
@@ -102,13 +102,13 @@ exports.updateCommercial = async ( req, res ) => {
 
 
 exports.deleteCommercial = ( req, res ) => {
-   let articleId = parseInt( req.params.id )
+   const { id } = req.params
 
-   if ( !articleId ) {
+   if ( !id ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
 
-   Commercial.deleteOne( { id: articleId } )
+   Commercial.findByIdAndDelete( id )
       .then( () => res.status( 200 ).json( { message: "OK" } ) )
       .catch( err => res.status( 500 ).json( { message: 'Database Error', error: err } ) )
 }
