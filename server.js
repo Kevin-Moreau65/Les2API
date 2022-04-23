@@ -14,7 +14,7 @@ const routeAuth = require( "./routes/auth" )
 const app = express()
 
 app.use( cors() )
-app.use( helmet() )
+app.use( helmet( { crossOriginEmbedderPolicy: false } ) )
 app.use( helmet.contentSecurityPolicy( {
     useDefaults: true
 } ) )
