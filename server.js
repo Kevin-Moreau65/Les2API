@@ -13,7 +13,6 @@ const routeAuth = require( "./routes/auth" )
 /*** Initialisation de l'API */
 const app = express()
 
-app.use( cors() )
 app.use( helmet() )
 app.use( helmet.contentSecurityPolicy( {
     useDefaults: true
@@ -25,6 +24,7 @@ app.use( helmet.hidePoweredBy() )
 app.use( helmet.noSniff() )
 app.use( helmet.xssFilter() )
 app.use( helmet( { crossOriginEmbedderPolicy: false } ) )
+app.use( cors() )
 app.use( express.json( { limit: "50mb" } ) )
 app.use( express.urlencoded( { extended: true } ) )
 
