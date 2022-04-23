@@ -36,6 +36,10 @@ app.use( express.urlencoded( { extended: true } ) )
 
 /******************************/
 /*** Mise en place du routage */
+app.use( function ( req, res, next ) {
+    res.setHeader( 'Cross-Origin-Resource-Policy', '*' )
+    next()
+} )
 app.get( '/', ( req, res ) => res.send( `I'm online. All is OK !1` ) )
 app.use( '/health', ( req, res ) => res.status( 200 ).json( { message: "OK" } ) )
 app.use( '/login', routeAuth )
