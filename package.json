@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-   
     "dev": "nodemon -r dotenv/config server.js",
-    "start": "budo index.js:bundle.js",
-    "start2": "node -r dotenv/config server.js"  
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,10 +14,13 @@
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "ejs": "^3.1.7",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
-    "simple-peer": "^9.11.1"
+    "simple-peer": "^9.11.1",
+    "socket.io": "^4.5.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
