@@ -70,7 +70,7 @@ exports.newCommercial = async ( req, res ) => {
 exports.updateCommercial = async ( req, res ) => {
    const { id } = req.params
    const { description, imgs, pdf } = req.body
-   if ( !id, !description, !imgs, !pdf ) {
+   if ( !id || !description || !imgs || !pdf ) {
       return res.status( 400 ).json( { message: 'Missing parameter' } )
    }
    let data = {}
